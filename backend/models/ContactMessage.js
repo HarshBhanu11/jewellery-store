@@ -1,12 +1,9 @@
-// backend/models/ContactMessage.js
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
-const ContactSchema = new mongoose.Schema({
-  name: { type: String, required: true, trim: true, maxlength: 120 },
-  email: { type: String, required: true, trim: true, maxlength: 200 },
-  phone: { type: String, trim: true, maxlength: 30 },
-  message: { type: String, required: true, trim: true, maxlength: 2000 },
-  createdAt: { type: Date, default: Date.now }
+const contactMessageSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  message: String,
 });
 
-module.exports = mongoose.model('ContactMessage', ContactSchema);
+export default mongoose.model("ContactMessage", contactMessageSchema);
