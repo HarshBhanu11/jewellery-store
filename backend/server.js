@@ -4,6 +4,10 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import contactRoutes from "./routes/contactRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
+import adminAuthRoutes from "./routes/adminAuthRoutes.js";
+
+
 
 dotenv.config();
 
@@ -14,6 +18,11 @@ app.use(express.json());
 // Add this line after the other route setup
 app.use("/api", contactRoutes);
 app.use("/api", productRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/admin/auth", adminAuthRoutes);
+app.use("/api/products", productRoutes);
+
+
 
 
 // MongoDB setup
