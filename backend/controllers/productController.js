@@ -1,7 +1,7 @@
 import Product from "../models/Product.js";
 
-// GET all products
-export const getAllProducts = async (req, res) => {
+// GET ALL PRODUCTS
+export const getProducts = async (req, res) => {
   try {
     const products = await Product.find();
     res.json(products);
@@ -10,18 +10,18 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
-// ADD product
+// ADD PRODUCT
 export const addProduct = async (req, res) => {
   try {
     const product = new Product(req.body);
     await product.save();
-    res.json(product);
+    res.json({ message: "Product added successfully" });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
-// UPDATE product
+// UPDATE PRODUCT
 export const updateProduct = async (req, res) => {
   try {
     const updated = await Product.findByIdAndUpdate(
@@ -29,18 +29,22 @@ export const updateProduct = async (req, res) => {
       req.body,
       { new: true }
     );
-    res.json(updated);
+
+    if (!updated)
+      return res.status(404).json({ message: "Product not found" });
+
+    res.json({ message: "Product updated", product: updated });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
-// DELETE product
+// DELETE PRODUCT
 export const deleteProduct = async (req, res) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
     res.json({ message: "Product deleted" });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };

@@ -1,25 +1,24 @@
 import express from "express";
-import jwt from "jsonwebtoken";
+import {
+  getAllProducts,
+  addProduct,
+  updateProduct,
+  deleteProduct
+} from "../controllers/adminController.js";
+import adminAuth from "../middleware/adminAuth.js";
 
 const router = express.Router();
 
-router.post("/login", (req, res) => {
-  const { email, password } = req.body;
+// GET all products
+router.get("/products", adminAuth, getAllProducts);
 
-  if (
-    email !== process.env.ADMIN_EMAIL ||
-    password !== process.env.ADMIN_PASSWORD
-  ) {
-    return res.status(401).json({ message: "Invalid credentials" });
-  }
+// ADD product
+router.post("/products", adminAuth, addProduct);
 
-  const token = jwt.sign(
-    { role: "admin", email },
-    process.env.JWT_SECRET,
-    { expiresIn: "1d" }
-  );
+// UPDATE product
+router.put("/products/:id", adminAuth, updateProduct);
 
-  res.json({ token });
-});
+// DELETE product
+router.delete("/products/:id", adminAuth, deleteProduct);
 
 export default router;

@@ -2,37 +2,33 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import contactRoutes from "./routes/contactRoutes.js";
+
 import productRoutes from "./routes/productRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import adminAuthRoutes from "./routes/adminAuthRoutes.js";
-
-
 
 dotenv.config();
 
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Add this line after the other route setup
-app.use("/api", contactRoutes);
-app.use("/api", productRoutes);
+// Routes
+app.use("/api/products", productRoutes);
+app.use("/api/contact", contactRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/auth", adminAuthRoutes);
-app.use("/api/products", productRoutes);
 
-
-
-
-// MongoDB setup
+// MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log("MongoDB Error:", err));
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.log("❌ MongoDB Error:", err));
 
-
-
-app.listen(4000, () =>
-  console.log("Backend running on http://localhost:4000")
-);
+// Server
+app.listen(4000, () => {
+  console.log("🚀 Backend running on http://localhost:4000");
+});

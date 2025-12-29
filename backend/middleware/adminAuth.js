@@ -1,19 +1,14 @@
 import jwt from "jsonwebtoken";
 
-const adminAuth = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+export default function adminAuth(req, res, next) {
+  const token = req.headers.authorization?.split(" ")[1];
 
-  if (!authHeader)
-    return res.status(401).json({ message: "No token" });
-
-  const token = authHeader.split(" ")[1];
+  if (!token) return res.status(401).json({ message: "Unauthorized" });
 
   try {
     jwt.verify(token, process.env.JWT_SECRET);
     next();
   } catch {
-    res.status(403).json({ message: "Invalid token" });
+    res.status(401).json({ message: "Invalid token" });
   }
-};
-
-export default adminAuth;
+}

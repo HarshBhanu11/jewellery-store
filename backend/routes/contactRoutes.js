@@ -1,18 +1,13 @@
 import express from "express";
-import { submitContactForm } from "../controllers/contactController.js";
-import { body } from "express-validator";
+import { addMessage, getMessages } from "../controllers/contactController.js";
+import adminAuth from "../middleware/adminAuth.js";
 
 const router = express.Router();
 
-router.post(
-  "/contact",
-  [
-    body("name").notEmpty().withMessage("Name is required"),
-    body("email").isEmail().withMessage("Invalid email"),
-    body("phone").notEmpty().withMessage("Phone is required"),
-    body("message").notEmpty().withMessage("Message is required")
-  ],
-  submitContactForm
-);
+// Public (website contact form)
+router.post("/", addMessage);
+
+// Admin (view messages)
+router.get("/", adminAuth, getMessages);
 
 export default router;
