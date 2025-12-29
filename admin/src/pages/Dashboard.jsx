@@ -1,10 +1,13 @@
-function Dashboard() {
+import Navbar from "../components/Navbar";
+
+export default function Dashboard() {
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Admin Dashboard</h1>
-      <p>Welcome to Admin Panel</p>
+    <div className="admin-container">
+      <Navbar />
+      <div className="content">
+        <h1>Welcome Admin 👋</h1>
+        <p>Manage your products and messages.</p>
+      </div>
     </div>
   );
 }
-
-export default Dashboard;

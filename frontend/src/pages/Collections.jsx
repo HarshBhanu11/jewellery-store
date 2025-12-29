@@ -1,27 +1,33 @@
-import { useEffect, useState } from 'react';
-import { fetchProducts } from '../api';
-import ProductCard from '../components/productcard';
+import { useEffect, useState } from "react";
+import { fetchProducts } from "../api";
+import ProductCard from "../components/productcard";
 
 export default function Collections() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetchProducts()
-      .then(data => {
-        console.log("Fetched products:", data);
-        setProducts(data); // this must be an array
-      })
-      .catch(err => console.error(err));
+    const loadProducts = async () => {
+      try {
+        const data = await fetchProducts();
+        console.log(data);
+        setProducts(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadProducts();
   }, []);
 
   return (
     <div className="page">
       <h1>Collections</h1>
+
       <div className="grid">
-        {products.map(p => (
-          <ProductCard 
-            key={p.id}
-            product={p}  // 👈 pass product details
+        {products.map((p) => (
+          <ProductCard
+            key={p._id}   
+            product={p}
           />
         ))}
       </div>

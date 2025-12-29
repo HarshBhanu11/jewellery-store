@@ -1,39 +1,35 @@
 import { useState } from "react";
 
-function AddProduct() {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+export default function AddProduct() {
+  const [form, setForm] = useState({
+    name: "",
+    price: "",
+    category: "",
+    imageUrl: ""
+  });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Product added (demo)");
+
+    await fetch("http://localhost:4000/api/admin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
+      body: JSON.stringify(form)
+    });
+
+    alert("Product added!");
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Add Product</h2>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Product Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <br /><br />
-
-        <input
-          type="number"
-          placeholder="Price"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
-        <br /><br />
-
-        <button type="submit">Add</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input placeholder="Name" onChange={e => setForm({ ...form, name: e.target.value })} />
+      <input placeholder="Price" onChange={e => setForm({ ...form, price: e.target.value })} />
+      <input placeholder="Category" onChange={e => setForm({ ...form, category: e.target.value })} />
+      <input placeholder="Image URL" onChange={e => setForm({ ...form, imageUrl: e.target.value })} />
+      <button>Add Product</button>
+    </form>
   );
 }
-
-export default AddProduct;
