@@ -1,17 +1,75 @@
 import express from "express";
-import {
-  getProducts,
-  addProduct,
-  updateProduct,
-  deleteProduct,
-} from "../controllers/productController.js";
+import Product from "../models/Product.js";
 import adminAuth from "../middleware/adminAuth.js";
 
 const router = express.Router();
 
-router.get("/", getProducts);
-router.post("/", adminAuth, addProduct);
-router.put("/:id", adminAuth, updateProduct);
-router.delete("/:id", adminAuth, deleteProduct);
+/* ======================
+   PUBLIC ROUTES
+====================== */
+
+// Get all products (Collections page)
+router.get("/", async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get single product by slug (Product Details page)
+router.get("/:slug", async (req, res) => {
+  try {
+    const product = await Product.findOne({ slug: req.params.slug });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+/* ======================
+   ADMIN ROUTES
+====================== */
+
+// Add product
+router.post("/", adminAuth, async (req, res) => {
+  try {
+    const product = new Product(req.body);
+    await product.save();
+    res.json(product);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// Update product
+router.put("/:id", adminAuth, async (req, res) => {
+  try {
+    const updated = await Product.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// Delete product
+router.delete("/:id", adminAuth, async (req, res) => {
+  try {
+    await Product.findByIdAndDelete(req.params.id);
+    res.json({ message: "Product deleted" });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
 
 export default router;
