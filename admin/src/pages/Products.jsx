@@ -67,27 +67,77 @@ export default function Products() {
           </div>
         ))}
 
-        {editProduct && (
-          <div className="card">
-            <h3>Edit Product</h3>
+ {editProduct && (
+  <div className="card">
+    <h3>Edit Product</h3>
 
-            <input
-              value={editProduct.name}
-              onChange={(e) =>
-                setEditProduct({ ...editProduct, name: e.target.value })
-              }
-            />
+    <div className="form-group">
+      <label>Name</label>
+      <input
+        value={editProduct.name}
+        onChange={(e) =>
+          setEditProduct({ ...editProduct, name: e.target.value })
+        }
+      />
+    </div>
 
-            <input
-              value={editProduct.price}
-              onChange={(e) =>
-                setEditProduct({ ...editProduct, price: e.target.value })
-              }
-            />
+    <div className="form-group">
+      <label>Slug</label>
+      <input
+        value={editProduct.slug}
+        onChange={(e) =>
+          setEditProduct({ ...editProduct, slug: e.target.value })
+        }
+      />
+    </div>
 
-            <button onClick={updateProduct}>Update</button>
-          </div>
-        )}
+    <div className="form-group">
+      <label>Price</label>
+      <input
+        type="number"
+        value={editProduct.price}
+        onChange={(e) =>
+          setEditProduct({ ...editProduct, price: e.target.value })
+        }
+      />
+    </div>
+
+    <div className="form-group">
+      <label>Category</label>
+      <input
+        value={editProduct.category}
+        onChange={(e) =>
+          setEditProduct({ ...editProduct, category: e.target.value })
+        }
+      />
+    </div>
+
+    <div className="form-group">
+      <label>Tag</label>
+      <input
+        value={editProduct.tag || ""}
+        onChange={(e) =>
+          setEditProduct({ ...editProduct, tag: e.target.value })
+        }
+      />
+    </div>
+
+    <div className="form-group">
+      <label>Image URL</label>
+      <input
+        value={editProduct.imageUrl}
+        onChange={(e) =>
+          setEditProduct({ ...editProduct, imageUrl: e.target.value })
+        }
+      />
+    </div>
+
+    <div className="btn-group">
+      <button onClick={updateProduct}>Update</button>
+      <button onClick={() => setEditProduct(null)}>Cancel</button>
+    </div>
+  </div>
+)}
       </div>
     </div>
   );

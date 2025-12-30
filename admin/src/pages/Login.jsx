@@ -9,7 +9,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:4000/api/admin/login", {
+    const res = await fetch("http://localhost:4000/api/admin/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
@@ -28,8 +28,20 @@ export default function Login() {
   return (
     <div className="login-box">
       <h2>Admin Login</h2>
-      <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
+
+      <input
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+
       <button onClick={handleLogin}>Login</button>
     </div>
   );
