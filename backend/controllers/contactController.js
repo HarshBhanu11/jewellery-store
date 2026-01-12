@@ -13,9 +13,9 @@ export const addMessage = async (req, res) => {
 
     await newMessage.save();
 
-    res.status(201).json({ message: "Message sent successfully" });
+    res.status(201).json({success:true, message: "Message sent successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({success:false, message: error.message });
   }
 };
 
