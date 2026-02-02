@@ -1,21 +1,21 @@
+import "./config/env.js";
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 
 import productRoutes from "./routes/productRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import adminAuthRoutes from "./routes/adminAuthRoutes.js";
 
-dotenv.config();
+
 
 const app = express();
 
 // Middleware
+
 app.use(cors());
 app.use(express.json());
-
 // Routes
 app.use("/api/products", productRoutes);
 app.use("/api/contact", contactRoutes);

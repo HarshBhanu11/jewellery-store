@@ -1,27 +1,40 @@
 import ContactMessage from "../models/ContactMessage.js";
+import { sendCustomerMail, sendOwnerMail } from "../utils/mailer.js";
 
-// Save message (from website)
+// Save message (from website) + send emails
 export const addMessage = async (req, res) => {
   try {
     const { name, email, phone, message } = req.body;
 
+    // Save to DB
     const newMessage = new ContactMessage({
       name,
       email,
       phone,
-      message,
+      message
     });
 
     await newMessage.save();
 
+    // Send emails
+    try {
+      await sendCustomerMail({ name, email });
+      console.log("Customer email sent to", email);
+      await sendOwnerMail({ name, email, phone, message });
+      console.log("Owner email sent");
+    } catch (mailError) {
+      console.error("Email error:", mailError);
+    }
+    
+
     res.status(201).json({
       success: true,
-      message: "Message sent successfully",
+      message: "Message sent successfully"
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      message: error.message
     });
   }
 };
@@ -48,8 +61,8 @@ export const markMessage = async (req, res) => {
     );
 
     res.json(updated);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -58,7 +71,7 @@ export const deleteMessage = async (req, res) => {
   try {
     await ContactMessage.findByIdAndDelete(req.params.id);
     res.json({ message: "Message deleted" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
