@@ -10,6 +10,7 @@ return (
 <Link to="/collections">Collections</Link>
 <Link to="/about">About</Link>
 <Link to="/contact">Contact</Link>
+<Link to="/cart">🛒 Cart</Link>
 </div>
 </div>
 </nav>

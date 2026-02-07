@@ -7,20 +7,20 @@ import productRoutes from "./routes/productRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import adminAuthRoutes from "./routes/adminAuthRoutes.js";
-
-
+import cartRoutes from "./routes/cartRoutes.js"; // ✅ FIXED
 
 const app = express();
 
 // Middleware
-
 app.use(cors());
 app.use(express.json());
+
 // Routes
 app.use("/api/products", productRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/auth", adminAuthRoutes);
+app.use("/api/cart", cartRoutes); // ✅ Cart API
 
 // MongoDB
 mongoose
